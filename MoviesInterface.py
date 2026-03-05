@@ -78,11 +78,16 @@ def update_rating():
 
 
 def delete_movie():
-    """
-    Prompt user for a Movie Title.
-    Delete that item from the database.
-    """
-    print("deleting movie")
+    """Delete a movie item from the DynamoDB table based on the title."""
+    title = input("Enter the movie title to delete: ").strip()
+
+    # Delete the item from the DynamoDB table
+    response = table.delete_item(
+        Key={"Title": title}
+    )
+
+    if response.get("ResponseMetadata", {}).get("HTTPStatusCode") == 200:
+        print(f"\nMovie '{title}' deleted successfully.")
 
 def query_movie():
     """
